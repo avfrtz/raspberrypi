@@ -1,3 +1,10 @@
+# Ava Fritz
+# 07/27/2023
+# This assignment asks for a student's name and grade.
+# It returns the students name and converts the number grade to a letter.
+# If the grade is invalid, it returns invalid.
+# References Module 9 Lecture 2 and Module 9 Assigned Reading #1 (Ch 8)
+
 .text
 .global main
 main:
@@ -50,21 +57,25 @@ printGrades:
     STR lr, [sp]
     STR r4, [sp, #4]
 
-    # Check if grade is less than 0 or greater than 100
+    # Check if grade is greater than 0
     MOV r4, r0
     MOV r1, #0
     MOV r0, #0
     CMP r4, r0
     MOVGE r1, #1
 
+    # Check if grade is less than 100
     MOV r2, #0
     MOV r0, #100
     CMP r4, r0
     MOVLE r2, #1
 
+    # SUM results of comparisons and determine if grade is valid (between 0 and 100)
     AND r1, r1, r2
     MOV r2, #1
     CMP r1, r2
+  
+    # If grade is valid, move to grade A loop
     BEQ grade_A
 
     # Code block for invalid grade
@@ -72,6 +83,7 @@ printGrades:
     BL printf
     B EndIf
 
+    # If the grade is less than 90, move to B. Else, print A
     grade_A:
     MOV r0, #90
     CMP r4, r0
@@ -82,6 +94,7 @@ printGrades:
     BL printf
     B EndIf
 
+    # If the grade is less than 80, move to C. Else, print B
     grade_B:
     MOV r0, #80
     CMP r4, r0
@@ -92,6 +105,7 @@ printGrades:
     BL printf
     B EndIf
 
+    # If the grade is less than 70, move to F. Else, print C
     grade_C:
     MOV r0, #70
     CMP r4, r0
@@ -102,6 +116,7 @@ printGrades:
     BL printf
     B EndIf
 
+    # Grade is valid and less than 70, print F
     Else:
     # Code block for grade of F
     LDR r0, =grade_f
@@ -109,7 +124,7 @@ printGrades:
     B EndIf
 
     EndIf:
-
+    # Pop the stack
     LDR lr, [sp]
     LDR r4, [sp, #4]
     ADD sp, sp, #8
