@@ -2,6 +2,8 @@
 .global C2F
 .global Ft2Inches
 .global Inches2Ft
+.global Miles2KM
+.global KPH
 
 .text
 F2C:
@@ -100,3 +102,50 @@ Inches2Ft:
 .data
 
 # END Inches2Ft
+
+.text
+Miles2KM:
+    # push stack
+    SUB sp, sp, #4
+    STR lr, [sp]
+
+    # Convert miles to kilometers by multiplying by 16, then dividing by 10
+    # Multiplying by 16 then dividing by 10 maintains the precision
+    MOV r1, #16
+    MUL r0, r0, r1
+    MOV r1, #10
+    BL __aeabi_idiv
+
+    # Pop stack
+    LDR lr, [sp]
+    ADD sp, sp, #4
+    MOV pc, lr
+    
+
+.data
+
+# END Mile2KM
+
+.text
+KPH:
+    # push stack variables
+    SUB sp, sp, #4
+    STR lr, [sp]
+
+    # Convert kilometers to miles
+    MOV r4, r0
+    MOV r0, r1
+    BL Miles2KM
+
+    # Convert kilometers to kilometers per hour by dividing km by h
+    MOV r1, r4
+    BL __aeabi_idiv
+
+    # Pop stack
+    LDR lr, [sp]
+    ADD sp, sp, #4
+    MOV pc, lr
+
+.data
+
+# END KPH

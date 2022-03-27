@@ -1,4 +1,4 @@
-All: Feet2Inches F2C C2F Inches2Feet
+All: Feet2Inches F2C C2F Inches2Feet Miles2Kilometers kph
 LIB=libConversions.o
 CC=gcc
 
@@ -12,6 +12,12 @@ F2C: F2C.o $(LIB)
 	$(CC) $@.o $(LIB) -g -o $@
 
 C2F: C2F.o $(LIB)
+	$(CC) $@.o $(LIB) -g -o $@
+
+Miles2Kilometers: Miles2Kilometers.o $(LIB)
+	$(CC) $@.o $(LIB) -g -o $@
+
+kph: kph.o $(LIB)
 	$(CC) $@.o $(LIB) -g -o $@
 
 .s.o:
