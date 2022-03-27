@@ -9,9 +9,8 @@
 main:
 
     # Push the stack
-    SUB sp, sp, #8
+    SUB sp, sp, #4
     STR lr, [sp, #0]
-    STR r4, [sp, #4]
 
     # Prompt for and read input
     LDR r0, =prompt0
@@ -19,54 +18,70 @@ main:
     LDR r0, =format0
     LDR r1, =value
     BL scanf
-
-    # Store input
     LDR r0, =value
     LDR r0, [r0]
-
-    # Check using logic
-    #BL logicCheck
-    MOV r0, #1
-
-    # Put return value in r4 for safe keeping
-    MOV r4, r0
-
-    # Check using non-logic
-    #BL noLogCheck
-    MOV r0, #1
+    BL printf
     
-    # Put return value in r3 for safe keeping
-    MOV r3, r0
+    # Non logic check
+    #MOV r1, r0
+    #LDR r0, =test1
+    #BL printf
 
-    # Check if the sum is equal to 2
-    ADD r0, r3, r4
-    MOV r1, #2
-    CMP r0, r1
-    BEQ valid
+    # Load input again for logic check
+    #LDR r0, =value
+    #BL printf
 
-    # Code block for not a char (sum less than 2)
+    # Check using logic (Module 9 Lecture 2.2)
+    MOV r1, r0
+    MOV r2, #0
+    CMP r1, #0x41
+    ADDGE r2, #1 // if true, bit 0 is changed to 1
+
+    MOV r3, #0
+    CMP r1, #0x5A
+    ADDLT r3, #1
+    AND r2, r2, r3 // Results from first AND, if true r1 is uppercase
+
+    MOV r0, #0
+    CMP r1, #0x61
+    ADDGE r0, #1
+
+    MOV r3, #0
+    CMP r1, #0x7A
+    ADDLT r3, #1
+    AND r3, r3, r0  // Results from second AND, if true r1 is lowercase
+    ORR r2, r2, r3 // Results from OR, if true r1 is a character
+
+    // If ORR statement is true, print char. Else, print notChar
+    MOV r2, #1
+    CMP r1, r2
+
+    BEQ isChar
+
+    # Invalid char
     LDR r0, =notChar
     BL printf
     B EndIf
 
-    # Code block for valid code
-    valid:
+    isChar:
     LDR r0, =char
     BL printf
     B EndIf
 
     EndIf:
+
     # Pop the stack
-    LDR lr, [sp]
-    LDR r4, [sp, #4]
-    ADD sp, sp, #8
+    ADD sp, sp, #4
+    MOV pc, lr
 
     
 .data
     prompt0: .asciz "\nEnter input: "
     char: .asciz "\nThis is a char\n"
     notChar: .asciz "\nThis is not a char\n"
+    test1: .asciz "\nThe results of non-logic test are: %s\n"
+    test2: .asciz "\nThe results of logic test are:\n"
     format0: .asciz "%s"
-    value: .word 0
+    value: .space 128
 
 # END main

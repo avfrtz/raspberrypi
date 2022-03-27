@@ -43,7 +43,7 @@ main:
 .data
     prompt0: .asciz "\nEnter a student's name: "
     format0: .asciz "%s"
-    name: .word 0
+    name: .space 128
     studentName: .asciz "\nStudent's name is: %s"
     prompt1: .asciz "\nEnter a grade between 0 and 100: "
     format1: .asciz "%d"
