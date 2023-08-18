@@ -9,6 +9,21 @@
 # r2 - user input
 # r4 - sum of input
 # r3 - average of input
+# Pseudo Code:
+#count = 0
+#userInput = 0
+#inputTotal = 0
+#inputAverage = 0
+#while userInput != 0
+#    count += 1
+#    inputTotal += userInput
+# after the while loop breaks due to user input of -1
+#
+#inputAverage = inputTotal / count
+#
+#print("Total numbers input: " + count)
+#print("Sum of numbers input: " + inputTotal)
+#print("Average of numbers input: " + inputAverage)
 .text
 .global main
 
